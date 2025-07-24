@@ -3,11 +3,12 @@ from django.db import models
 
 class Category(models.Model):
     title = models.CharField(max_length=100)
-    parent_category = models.ForeignKey(to='self',
-                                        on_delete=models.CASCADE,
-                                        blank=True,
-                                        null=True)
-
+    parent_category = models.ForeignKey(
+        to='self',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
     def __str__(self):
         ancestors = []
         category = self
@@ -38,10 +39,6 @@ class Image(models.Model):
 class Estate(models.Model):
     #user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, verbose_name = 'Название')
-    parent_category=models.ForeignKey(to = 'self',
-                                      on_delete = models.CASCADE,
-                                      blank = True,
-                                      null = True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     image_first = models.ImageField(upload_to='media/estate_image')
     area = models.DecimalField(decimal_places=1,max_digits=12,verbose_name='km.2')
