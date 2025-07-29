@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <title>{% block title %}Purple Buzz{% endblock %}</title>
@@ -35,27 +35,60 @@
                 <div class="flex-fill mx-xl-5 mb-2">
                     <ul class="nav navbar-nav d-flex justify-content-between mx-xl-5 text-center text-dark">
                         <li class="nav-item">
-                            <a class="nav-link btn-outline-primary rounded-pill px-3" href="index.html">Home</a>
+                            <a class="nav-link btn-outline-primary rounded-pill px-3" href="{% url 'index' %}">Домой</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn-outline-primary rounded-pill px-3" href="about.html">About</a>
+                            <a class="nav-link btn-outline-primary rounded-pill px-3" href="{% url 'index' %}l">О нас</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn-outline-primary rounded-pill px-3" href="work.html">Work</a>
+                            <a class="nav-link btn-outline-primary rounded-pill px-3" href="{% url 'favorite_list' %}">Избырнные</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn-outline-primary rounded-pill px-3" href="pricing.html">Pricing</a>
+                            <a class="nav-link btn-outline-primary rounded-pill px-3" href="{% url 'index' %}">Pricing</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn-outline-primary rounded-pill px-3" href="contact.html">Contact</a>
+                            <a class="nav-link btn-outline-primary rounded-pill px-3" href="{% url 'index' %}">Контакт</a>
                         </li>
                     </ul>
                 </div>
                 <div class="navbar align-self-center d-flex">
                     <a class="nav-link" href="#"><i class='bx bx-bell bx-sm bx-tada-hover text-primary'></i></a>
                     <a class="nav-link" href="#"><i class='bx bx-cog bx-sm text-primary'></i></a>
-                    <a class="nav-link" href="#"><i class='bx bx-user-circle bx-sm text-primary'></i></a>
-                </div>
+                    <div class="dropdown" style="position: relative;">
+                      <button class="nav-link dropdown-toggle" id="userDropdown" onclick="toggleMenu()">
+                        <i class='bx bx-user-circle bx-sm text-primary'></i>
+                      </button>
+
+                      <div id="dropdownMenu" class="dropdown-menu" style="display: none; position: absolute; right: 0;">
+                        {% if user.is_authenticated %}
+                          <a class="dropdown-item" href="{% url 'profile_settings' %}">Настройки</a>
+                          <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+                        {% else %}
+                          <a class="dropdown-item" href="{% url 'login' %}">Войти</a>
+                          <a class="dropdown-item" href="{% url 'register' %}">Регистрация</a>
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    <script>
+                      function toggleMenu() {
+                        const dropdownMenu = document.getElementById('dropdownMenu');
+                        if (dropdownMenu.style.display === 'none') {
+                          dropdownMenu.style.display = 'block';
+                        } else {
+                          dropdownMenu.style.display = 'none';
+                        }
+                      }
+
+                      // Закрытие меню при клике вне его
+                      document.addEventListener('click', function(event) {
+                        const dropdown = document.getElementById('userDropdown');
+                        const menu = document.getElementById('dropdownMenu');
+                        if (!dropdown.contains(event.target) && !menu.contains(event.target)) {
+                          menu.style.display = 'none';
+                        }
+                      });
+                    </script>
             </div>
         </div>
     </nav>
@@ -110,7 +143,7 @@
                 </div>
 
                 <div class="col-lg-3 col-md-4 my-sm-0 mt-4">
-                    <h3> class="h4 pb-lg-3 text-light light-300">Our Company</h3>
+                    <h2 class="h4 pb-lg-3 text-light light-300">Our Company</h2>
                         <ul class="list-unstyled text-light light-300">
                             <li class="pb-2">
                                 <i class='bx-fw bx bxs-chevron-right bx-xs'></i><a class="text-decoration-none text-light" href="index.html">Главная страница</a>

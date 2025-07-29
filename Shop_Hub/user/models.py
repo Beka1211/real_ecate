@@ -62,3 +62,8 @@ class MyUser(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+class OPT(models.Model):
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)

@@ -1,5 +1,5 @@
 from django.db import models
-
+from user.models import MyUser
 class Category(models.Model):
     title = models.CharField(max_length=100)
     image_first = models.ImageField(upload_to='media/estate_image')
@@ -55,3 +55,7 @@ class Estate(models.Model):
 
     def __str__(self):
         return self.title
+
+class Favorite(models.Model):
+    user = models.ForeignKey(MyUser,on_delete=models.CASCADE)
+    estate = models.ForeignKey(Estate,on_delete=models.CASCADE)

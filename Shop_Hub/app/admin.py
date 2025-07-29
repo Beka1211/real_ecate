@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Estate, City, District, Image
+from .models import Category, Estate, City, District, Image,Favorite
 
 
 class EstateAdmin(admin.ModelAdmin):
@@ -13,3 +13,4 @@ admin.site.register(Estate, EstateAdmin)
 admin.site.register(City)
 admin.site.register(District)
 admin.site.register(Image)
+admin.site.register(Favorite)

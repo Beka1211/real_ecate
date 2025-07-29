@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Estate,Category
+from django.shortcuts import render, get_object_or_404, redirect
+from pyexpat.errors import messages
+
+from .models import Estate,Category,Favorite
 
 def index_view(request):
     parent_categories=Category.objects.filter(parent_category__isnull=True)
@@ -21,3 +23,24 @@ def estate_detail_views(request, category_id):
             'category': category,
             'estates': estates
         })
+
+def user_estate_like_view(request, estate_id):
+    if request.method == 'POST':
+        estate = get_object_or_404(Estate, id=estate_id)
+
+        like_exits = Favorite.objects.filter(user=request.user, estate=estate).exists().first()
+        if not like_exits:
+            like = Favorite(user=request.user, estate=estate)
+            like.save()
+        else:
+            like_exits.delete()
+        return redirect('index')
+    return redirect('index')
+
+def favorite_like_view(request):
+    if not request.user.is_authenticated:
+        messages.error(request,messages='Войдите в систему')
+        return redirect('index')
+    else:
+
+        return render(request, 'main/favorite_list.html')
