@@ -6,5 +6,6 @@ urlpatterns=[
     path('register',views.user_register_view, name='register'),
     path('login',views.user_login_view, name='login'),
     path('logout',views.user_logout_view,name='logout'),
-    path('profile_settings',views.user_profile_settings_view,name = 'profile_settings')
+    path('profile_settings',views.user_profile_settings_view,name = 'profile_settings'),
+    path('2FA',views.otp_verify_view, name = '2FA'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

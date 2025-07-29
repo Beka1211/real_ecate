@@ -25,22 +25,29 @@ def estate_detail_views(request, category_id):
         })
 
 def user_estate_like_view(request, estate_id):
-    if request.method == 'POST':
-        estate = get_object_or_404(Estate, id=estate_id)
-
-        like_exits = Favorite.objects.filter(user=request.user, estate=estate).exists().first()
-        if not like_exits:
-            like = Favorite(user=request.user, estate=estate)
-            like.save()
-        else:
-            like_exits.delete()
-        return redirect('index')
+    if not request.user.is_authenticated:
+        return redirect('login')
+    estate = get_object_or_404(Estate, id=estate_id)
+    like_exits = Favorite.objects.filter(user=request.user, estate=estate).first()
+    if like_exits:
+        like_exits.delete()
+    else:
+        Favorite.objects.create(user=request.user, estate=estate)
     return redirect('index')
+
+    #логика лайка
 
 def favorite_like_view(request):
     if not request.user.is_authenticated:
-        messages.error(request,messages='Войдите в систему')
+        messages.error(request, 'Войдите в систему')
         return redirect('index')
-    else:
 
-        return render(request, 'main/favorite_list.html')
+    favorites = Favorite.objects.filter(user=request.user)
+    estates = [fav.estate for fav in favorites]
+
+    return render(request, 'main/favorite_list.html', {'estates': estates})
+
+    #страница где будут хранится все лайки у можно будет увиеть эти залайканные обявление\товары
+
+def about_view(request):
+    return render(request,'main/about.html')

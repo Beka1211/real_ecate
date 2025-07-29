@@ -1,7 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<h2>Избранное</h2>
 
+<div class="row">
+    {% for estate in estates %}
+    <div class="col-md-4 mb-3 position-relative">
+        <div class="card border-0 shadow-lg overflow-hidden">
+            <img class="card-img-top" src="{{ estate.image_first.url }}" alt="{{ estate.title }}">
+            <div class="card-body">
+                <h3 class="card-title">{{ estate.title }}</h3>
+                <p><strong>Город:</strong> {{ estate.city.title }}</p>
+                <p><strong>Район:</strong> {{ estate.district.title }}</p>
+                <p><strong>Площадь:</strong> {{ estate.area }} м²</p>
+                <p><strong>Цена:</strong> {{ estate.price }} руб.</p>
+                <p>{{ estate.description|truncatewords:20 }}</p>
+                <a href="#" class="btn btn-primary">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>У вас пока нет избранных объявлений.</p>
+    {% endfor %}
+</div>
     <!-- Start Banner Hero -->
     <div id="work_banner" class="banner-wrapper bg-light w-100 py-5">
         <div class="banner-vertical-center-work container text-light d-flex justify-content-center align-items-center py-5 p-0">
