@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Reply to Comment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="replyForm" method="post" action="" role="form">
+          {% csrf_token %}
+          <!-- если на бэкенде принимаете parent_id -->
+          <input type="hidden" name="parent_id" id="parent_id" value="">
+          <div class="form-group">
+            <label for="modalMessage">Your Reply</label>
+            <textarea
+              class="form-control form-control-lg"
+              id="modalMessage"
+              name="comment"
+              rows="5"
+              placeholder="Your reply…"
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Отправить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const textarea = document.getElementById('inputmessage');
+  textarea.addEventListener('keydown', function(event) {
+    // Проверяем, что нажата только Enter (без Shift/Ctrl/Alt)
+    if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey && !event.altKey) {
+      event.preventDefault();       // Отменяем вставку переноса
+      this.form.submit();           // Отправляем форму
+    }
+  });
+});
+      const replyModalEl = document.getElementById('replyModal');
+  replyModalEl.addEventListener('show.bs.modal', event => {
+    // Кнопка, которая вызвала модалку
+    const btn = event.relatedTarget;
+    const feedbackId = btn.getAttribute('data-feedback-id');
+
+    // 1) Меняем action формы (пример URL: /estate/<estate_id>/feedback/<feedbackId>/reply/)
+    const form = replyModalEl.querySelector('#replyForm');
+    // если у вас есть именованный URL 'feedback_reply' с args estate.id, feedback.id
+    form.action = `{% url 'feedback_response' 0 %}`.replace('/0/', `/${}/`);
+
+    // 2) Или просто передаём родительский ID через hidden-поле
+    replyModalEl.querySelector('#parent_id').value = feedbackId;
+  });
+</script>
+</html>

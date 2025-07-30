@@ -59,3 +59,15 @@ class Estate(models.Model):
 class Favorite(models.Model):
     user = models.ForeignKey(MyUser,on_delete=models.CASCADE)
     estate = models.ForeignKey(Estate,on_delete=models.CASCADE)
+
+class Feedback(models.Model):
+    user = models.ForeignKey(MyUser,on_delete=models.CASCADE)
+    estate = models.ForeignKey(Estate,on_delete=models.CASCADE)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class FeedbackResponse(models.Model):
+    user = models.ForeignKey(MyUser,on_delete=models.CASCADE)
+    feedback = models.ForeignKey(Feedback, on_delete=models.CASCADE)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
