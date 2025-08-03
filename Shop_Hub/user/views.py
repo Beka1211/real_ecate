@@ -32,24 +32,24 @@ def user_login_view(request):
             if user:
                 otp_code = generate_otp_code()
 
-                # Сохраняем в сессию
                 request.session['otp_code'] = otp_code
-                request.session['otp_user_id'] = user.id  # нужно сохранить user.id
+                request.session['otp_user_id'] = user.id
 
-                # Сохраняем в базу
                 OPT.objects.create(user=user, code=otp_code)
 
-                # Отправляем письмо
                 send_mail(
-                    subject="Одноразовый код для входа",
-                    message=f"{otp_code}",
+                    subject="ErjanHolding",
+                    message=f'''
+                        Одноразовый код для входа
+                                {otp_code}        
+                        ''',
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[user_email]
                 )
 
-                return redirect('2FA')  # Не забудь маршрут должен ожидать user_id, либо использовать сессию
+                return redirect('2FA')
             else:
-                messages.error(request, 'error email or password')
+                messages.error(request, 'Неверный email или пароль.')
     return render(request, 'aut/login.html', context={'form_login': form})
 
 

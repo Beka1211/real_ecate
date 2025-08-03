@@ -78,8 +78,6 @@ def user_estate_like_view(request, estate_id):
         Favorite.objects.create(user=request.user, estate=estate)
     return redirect('index')
 
-    #логика лайка
-
 def favorite_like_view(request):
     if not request.user.is_authenticated:
         messages.error(request, 'Войдите в систему')
@@ -90,7 +88,6 @@ def favorite_like_view(request):
 
     return render(request, 'main/favorite_list.html', {'estates': estates})
 
-    #страница где будут хранится все лайки у можно будет увиеть эти залайканные обявление\товары
 
 def about_view(request):
     return render(request,'main/about.html')
